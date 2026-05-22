@@ -1,3 +1,12 @@
+---
+title: Hindi OCR
+emoji: 🏆
+colorFrom: yellow
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # AI-Powered Hindi OCR — Premium Web UI
 
 This Flask web app serves a premium, dark-mode OCR dashboard for the
@@ -48,4 +57,3 @@ gunicorn app:app --bind 0.0.0.0:$PORT
 5. Ensure the model folder `major_project_trained_model.keras/` is included in the repo.
 
 That’s it—Render will expose your public URL once the build completes.
-
