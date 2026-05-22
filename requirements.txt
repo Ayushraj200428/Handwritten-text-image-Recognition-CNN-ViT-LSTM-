@@ -1,0 +1,9 @@
+Flask==3.0.3
+gunicorn==22.0.0
+torch
+opencv-python
+numpy
+pillow
+timm
+pandas
+tqdm
