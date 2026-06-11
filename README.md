@@ -244,6 +244,18 @@ Run OCR on a base64-encoded image.
 
 ## Dataset
 
+The dataset is hosted on Kaggle:
+
+**[Download — Handwritten Text Recognition Dataset (Kaggle)](https://www.kaggle.com/datasets/ayushbuchu/hand-written-text-recognition)**
+
+After downloading, place the files in the project root:
+
+```
+hindi-htr/
+├── sikhna.parquet     ← training set
+└── pariksha.parquet   ← test set
+```
+
 The model is trained on a Parquet-formatted Hindi handwriting dataset.
 
 - **Image size:** 64 × 256 (H × W), grayscale
