@@ -1,31 +1,35 @@
 # Python
 __pycache__/
-.venv/
 *.pyc
 *.pyo
 *.pyd
+.Python
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Model checkpoints (large binary files - store separately e.g. Git LFS or release assets)
+*.keras
+*.pt
+*.pth
+major_project_trained_model.keras/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE
+.vscode/
+.idea/
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Archives / installers
-*.zip
-*.exe
+# Dataset files (large)
+*.parquet
 
-# Temp/installer folders
-_temp_matlab_R2026a_Windows/
-archive/
-labelled - Copy/
-labelled - Copy.zip
-
-# Large project artifacts
-matlab_R2026a_Windows.exe
-Claude Setup.exe
-
-# Large docs (optional)
-*.pdf
-*.pptx
-
-# Model artifacts (keep these in repo if needed)
-# major_project_trained_model.keras/  # Uncomment if you want to exclude
+# Temp files
+*.tmp
+templates_recovered.html

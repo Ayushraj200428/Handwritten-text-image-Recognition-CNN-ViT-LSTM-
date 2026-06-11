@@ -19,6 +19,8 @@ from Major_Project import DEVANAGARI_CHARS, HybridCNNViT_HindiOCR, WebcamPreproc
 
 
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -31,7 +33,11 @@ _temp_checkpoint_file = None
 
 @app.get("/")
 def home():
-	return render_template("index.html")
+	response = app.make_response(render_template("index.html"))
+	response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+	response.headers["Pragma"] = "no-cache"
+	response.headers["Expires"] = "0"
+	return response
 
 
 @app.get("/health")
@@ -65,12 +71,14 @@ def _safe_extract_base64(image_data: str) -> bytes:
 def _pack_checkpoint_dir_to_torch_zip(source_dir: Path) -> str:
 	"""
 	Convert extracted torch archive dir -> temporary .pt zip file.
-	Needed because current artifact is stored as folder: major_project_trained_model.keras/final_try/
 	"""
 	global _temp_checkpoint_file
 
+	# Always create a fresh temp file - don't reuse deleted ones
 	if _temp_checkpoint_file and Path(_temp_checkpoint_file).exists():
 		return _temp_checkpoint_file
+
+	_temp_checkpoint_file = None  # reset if file was deleted
 
 	with tempfile.NamedTemporaryFile(suffix=".pt", delete=False) as tmp:
 		tmp_path = tmp.name
@@ -87,17 +95,18 @@ def _pack_checkpoint_dir_to_torch_zip(source_dir: Path) -> str:
 
 def _resolve_checkpoint_path() -> str:
 	"""Support both file checkpoint and extracted checkpoint folder formats."""
-	raw_path = Path("major_project_trained_model.keras")
-	if raw_path.is_file():
-		return str(raw_path)
-
-	extracted = raw_path / "final_try"
-	if extracted.is_dir():
-		return _pack_checkpoint_dir_to_torch_zip(extracted)
+	# Try LSTM version first, fall back to original
+	for name in ["LSTM_VERSION.keras", "major_project_trained_model.keras"]:
+		raw_path = Path(name)
+		if raw_path.is_file():
+			return str(raw_path)
+		extracted = raw_path / "final_try"
+		if extracted.is_dir():
+			return _pack_checkpoint_dir_to_torch_zip(extracted)
 
 	raise FileNotFoundError(
-		"Checkpoint not found. Expected file 'major_project_trained_model.keras' "
-		"or folder 'major_project_trained_model.keras/final_try'."
+		"Checkpoint not found. Expected 'LSTM_VERSION.keras' or "
+		"'major_project_trained_model.keras' (file or folder with final_try/)."
 	)
 
 
@@ -112,6 +121,11 @@ def ensure_model_loaded():
 			return
 
 		try:
+			checkpoint_path = _resolve_checkpoint_path()
+			checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
+			saved_keys = checkpoint["model_state_dict"].keys()
+			has_bilstm = any("bilstm" in k for k in saved_keys)
+
 			model = HybridCNNViT_HindiOCR(
 				input_channels=1,
 				feature_dim=256,
@@ -120,13 +134,12 @@ def ensure_model_loaded():
 				vit_heads=6,
 				num_classes=len(DEVANAGARI_CHARS),
 				patch_size=4,
-				pretrained_vit=True,
+				pretrained_vit=False,
 				char_list=DEVANAGARI_CHARS,
+				bilstm_layers=2 if has_bilstm else 0,
 			).to(DEVICE)
 
-			checkpoint_path = _resolve_checkpoint_path()
-			checkpoint = torch.load(checkpoint_path, map_location=DEVICE)
-			model.load_state_dict(checkpoint["model_state_dict"])
+			model.load_state_dict(checkpoint["model_state_dict"], strict=False)
 			model.eval()
 
 			_model = model

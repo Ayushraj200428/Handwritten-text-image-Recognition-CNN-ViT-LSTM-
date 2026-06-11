@@ -76,7 +76,7 @@ function setPreview(dataUrl) {
 	previewImgEl.src = dataUrl;
 	previewWrapEl.classList.remove('hidden');
 	predictBtnEl.disabled = false;
-	uploadHintEl.textContent = 'Image ready. Click Run OCR to analyze.';
+	uploadHintEl.textContent = 'Image ready. Click Run to analyze.';
 	setAlert('');
 }
 
