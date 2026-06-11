@@ -113,7 +113,6 @@ python app.py
 ```
 ├── app.py                      # Flask web server, inference endpoints
 ├── Major_Project.py            # Model architecture, training, dataset
-├── Major_Project.ipynb         # Jupyter notebook (training + experiments)
 ├── LSTM_VERSION.keras          # Trained model checkpoint (best)
 ├── requirements.txt            # Python dependencies
 ├── Dockerfile                  # Container setup
@@ -122,8 +121,7 @@ python app.py
 ├── static/
 │   ├── app.js                  # Frontend logic
 │   └── styles.css              # Styling
-└── archive/
-    └── labels.csv              # Character label mapping
+
 ```
 
 ---
