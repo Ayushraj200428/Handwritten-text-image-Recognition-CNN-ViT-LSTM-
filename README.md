@@ -9,6 +9,7 @@
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [Model Comparison](#model-comparison)
+- [Pretrained Model](#pretrained-model)
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Training](#training)
@@ -85,6 +86,27 @@ ViT captures global context (which characters appear together), while BiLSTM cap
 | **Hybrid CNN + ViT + LSTM** | **96.4%** | **~50ms** | **16.9M** | **Best model** |
 
 All benchmarks measured on CPU (Intel), single image, 20-run average.
+
+---
+
+## Pretrained Model
+
+The trained `LSTM_VERSION.keras` checkpoint is hosted on Kaggle:
+
+**[Download — CNN + ViT + LSTM (Kaggle)](https://www.kaggle.com/models/ayushbuchu/cnn-vit-lstm-model)**
+
+After downloading, place the file in the project root:
+
+```
+hindi-htr/
+└── LSTM_VERSION.keras   ← place here
+```
+
+Then run the app normally:
+
+```bash
+python app.py
+```
 
 ---
 
