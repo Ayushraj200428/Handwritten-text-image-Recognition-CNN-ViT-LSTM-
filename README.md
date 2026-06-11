@@ -85,8 +85,6 @@ ViT captures global context (which characters appear together), while BiLSTM cap
 | Hybrid CNN + ViT | ~93% | ~40ms | 13.8M | No sequential modeling |
 | **Hybrid CNN + ViT + LSTM** | **96.4%** | **~50ms** | **16.9M** | **Best model** |
 
-All benchmarks measured on CPU (Intel), single image, 20-run average.
-
 ---
 
 ## Pretrained Model
