@@ -288,3 +288,4 @@ The model is trained on a Parquet-formatted Hindi handwriting dataset.
 - **CV:** OpenCV, Pillow
 - **Training:** AMP (mixed precision), AdamW, ReduceLROnPlateau, CTC Loss
 - **Container:** Docker
+- **Frontend:** ,HTML,CSS,Javascript
