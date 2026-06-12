@@ -7,7 +7,7 @@ from pathlib import Path
 import tempfile
 import threading
 import zipfile
-from typing import Optional
+from typing import Optional 
 
 import cv2
 import numpy as np
