@@ -197,5 +197,5 @@ document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
 
 resetOutput();
 checkHealth();
-setInterval(checkHealth, 10000);
+setInterval(checkHealth, 10000); 
 
