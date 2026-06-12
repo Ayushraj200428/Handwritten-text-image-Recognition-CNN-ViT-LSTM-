@@ -180,7 +180,7 @@ class CTCPredictionHead(nn.Module):
             nn.Linear(embed_dim // 2, num_classes))
 
     def forward(self, x):
-        return self.fc(x)
+        return self.fc(x) 
 
 # ============================================================================
 # PART 7: COMPLETE HYBRID MODEL  CNN -> ViT -> BiLSTM -> CTC
