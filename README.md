@@ -283,9 +283,10 @@ The model is trained on a Parquet-formatted Hindi handwriting dataset.
 
 ## Tech Stack
 
-- **Model:** PyTorch, timm
+- **Library:** PyTorch
+- **Model:** CNN,ViT,LSTM
 - **Server:** Flask
 - **CV:** OpenCV, Pillow
 - **Training:** AMP (mixed precision), AdamW, ReduceLROnPlateau, CTC Loss
 - **Container:** Docker
-- **Frontend:** ,HTML,CSS,Javascript
+- **Frontend:** HTML,CSS,Javascript
