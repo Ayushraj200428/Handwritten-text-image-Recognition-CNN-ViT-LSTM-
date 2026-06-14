@@ -36,9 +36,7 @@ BLANK_IDX   = len(DEVANAGARI_CHARS) - 1   # 108
 NUM_CLASSES = len(DEVANAGARI_CHARS)        # 109
 
 # ============================================================================
-# SHARED PREPROCESSING
-# Pipeline: grayscale -> CLAHE -> aspect-ratio resize with white padding -> /255
-# Dark strokes on light background, identical for training and inference.
+# IMAGE PREPROCESSING
 # ============================================================================
 def preprocess_image(image_input, target_size=(64, 256)):
     H, W = target_size
@@ -64,8 +62,6 @@ def preprocess_image(image_input, target_size=(64, 256)):
 
 # ============================================================================
 # PART 1: CNN FEATURE EXTRACTOR
-# Input (1, H, W) -> (feature_dim, H/4, W/4) after two MaxPool2d(2,2).
-# With TARGET_SIZE=(64,256): output spatial = (16, 64).
 # ============================================================================
 class CNNFeatureExtractor(nn.Module):
     def __init__(self, input_channels=1, feature_dim=256):
@@ -93,8 +89,6 @@ class CNNFeatureExtractor(nn.Module):
 
 # ============================================================================
 # PART 2: TOKEN EMBEDDING
-# patch_size=8 on CNN features (spatial 16x64) gives 2x8=16 tokens per axis
-# -> 16*8=128 tokens total. Larger patch captures broader stroke context.
 # ============================================================================
 class TokenEmbedding(nn.Module):
     def __init__(self, feature_dim=256, embed_dim=384, patch_size=8):
@@ -143,9 +137,6 @@ class ViTEncoder(nn.Module):
 
 # ============================================================================
 # PART 5: BiLSTM SEQUENCE MODELER
-# Inserted AFTER ViT encoder, BEFORE CTC head.
-# Forward LSTM captures left context; backward LSTM captures right context.
-# Architecture: embed_dim -> hidden_dim*2 (bidirectional) -> embed_dim (proj)
 # ============================================================================
 class BiLSTMSequenceModeler(nn.Module):
     def __init__(self, embed_dim=384, hidden_dim=256, num_layers=2, dropout=0.3):
